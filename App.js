@@ -3,6 +3,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import NewDeckView from './views/NewDeckView'; 
 import StatusBar from './components/StatusBar'; 
 import { purple, limeGreen } from './utils/colors'; 
+import MainNavigator from './components/MainNavigator'; 
+
+
 export default class App extends React.Component {
 
 
@@ -10,14 +13,10 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>  
         <StatusBar backgroundColor={purple} barStyle="light-content" />
-        <NewDeckView style={{flex:1}}/>
+        {/* <NewDeckView style={{flex:1}}/> */}
+        <MainNavigator />
+        {/* {Tab()} */}
       </View>
-
-      // <View style={styles.container}>
-      //   <Text>Open up App.js to start working on your app!</Text>
-      //   <Text>Changes you make will automatically reload.</Text>
-      //   <Text>{this.state.decks}</Text>
-      // </View>
     );
   }
 }

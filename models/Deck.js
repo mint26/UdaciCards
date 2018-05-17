@@ -3,5 +3,6 @@ export default class Deck {
         this.deckId = deckId; 
         this.title = title; 
         this.questions = questions ? questions : []; 
+        this.numCards = this.questions.length; 
     }
 }
