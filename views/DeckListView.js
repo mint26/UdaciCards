@@ -24,8 +24,13 @@ class DeckListView extends Component {
         });
     }
 
+    onDeckSelected = (item) => {
+        console.log('on deck selected', item); 
+        this.props.navigation.navigate('DeckView', {item: item}); 
+    }
+
     renderItem = ({ item }) => {
-        return <ListItem item = {item} key={`list-item-${item.deckId}`}/>
+        return <ListItem item = {item} key={`list-item-${item.deckId}`} onPress={() => {this.onDeckSelected(item);}}/>
     }
 
     render() {

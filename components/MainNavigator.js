@@ -5,6 +5,7 @@ import { white, purple } from '../utils/colors';
 import NewDeckView from '../views/NewDeckView'; 
 import DeckListView from '../views/DeckListView'; 
 import IndividualDeckView from '../views/IndividualDeckView';
+import DeckView from '../views/DeckView';
 import React from 'react';
 import { View } from 'react-native';
 
@@ -62,6 +63,9 @@ const MainNavigator = createStackNavigator({
   }, 
   IndividualDeckView: {
       screen: IndividualDeckView
+  },
+  DeckView: {
+    screen: DeckView
   }
 });
 

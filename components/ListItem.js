@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet} from 'react-native'; 
+import { View, Text, StyleSheet, TouchableOpacity} from 'react-native'; 
 import { limeGreen, blue, white, black, purple } from '../utils/colors'; 
 
 const listItem = (props) => {
     return (
         <View style={styles.listItem}>
-            <Text style={styles.listItemTitle}>{props.item.title}</Text>
-            <Text style={styles.listItemSubTitle}>{`${props.item.numCards} card(s)`}</Text>
+            <TouchableOpacity onPress={props.onPress}>
+                <Text style={styles.listItemTitle}>{props.item.title}</Text>
+                <Text style={styles.listItemSubTitle}>{`${props.item.numCards} card(s)`}</Text>
+            </TouchableOpacity>
         </View>
     ); 
 }
