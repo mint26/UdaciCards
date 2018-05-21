@@ -1,27 +1,35 @@
-import { Text, View } from 'react-native'; 
+import { Text, View, FlatList } from 'react-native'; 
 import React, { Component } from 'react'
 import ListItem from '../components/ListItem'; 
 import Deck from '../models/Deck'; 
+import * as API from '../utils/api';
 
 class DeckListView extends Component {
     
     state = {
-        decks : [
-            new Deck('test', 'testing', [{question: 'hello'}]),
-            new Deck('test1', 'Hello This is a test', []),
-            new Deck('test2', 'One MOre time', [{question: 'hello'}])
-        ]
+        decks : [] 
     }; 
 
+    componentDidMount(){
+        API.getDecks().then(decks => {
+            if (decks.length > 0) {
+                let items = decks.map(deck => {
+                    let deckItem = JSON.parse(deck[1]); 
+                    if (deckItem){
+                        return new Deck(deckItem.deckId, deckItem.title, deckItem.questions);; 
+                    }
+                }); 
+                this.setState({decks : items}); 
+            }
+        });
+    }
+
+    renderItem = ({ item }) => {
+        return <ListItem item = {item} key={`list-item-${item.deckId}`}/>
+    }
+
     render() {
-        let listItems = this.state.decks.map(deck => {
-            return <ListItem item = {deck} key={`list-item-${deck.deckId}`}/>
-        })
-        return (
-                <View style={{flex: 1}}>
-                    {listItems}
-                </View>
-                ); 
+        return <FlatList style={{flex: 1}} data={this.state.decks} renderItem={this.renderItem}/>; 
     }
 }
 

@@ -4,6 +4,7 @@ import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { white, purple } from '../utils/colors'; 
 import NewDeckView from '../views/NewDeckView'; 
 import DeckListView from '../views/DeckListView'; 
+import IndividualDeckView from '../views/IndividualDeckView';
 import React from 'react';
 import { View } from 'react-native';
 
@@ -58,7 +59,10 @@ const Tab = () => {
 const MainNavigator = createStackNavigator({
   App: {
         screen: Tab(),
-   }
+  }, 
+  IndividualDeckView: {
+      screen: IndividualDeckView
+  }
 });
 
 export default MainNavigator; 

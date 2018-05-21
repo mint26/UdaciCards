@@ -12,15 +12,16 @@ class NewDeckView extends Component {
         questionInput: ''
     }
     onAddDeck = () => {
-        console.log('deck', this.state.questionInput); 
         if (this.state.questionInput) {
-            let newDeck = new Deck(this.state.questionInput, this.state.questionInput); 
-            API.addDeck(newDeck).then(result => {
-                console.log('returned result', result); 
-            })
+            // let newDeck = new Deck(this.state.questionInput, this.state.questionInput); 
+            // API.addDeck(newDeck).then(result => {
+            //     console.log('returned result', result); 
+            // })
+            this.props.navigation.push('IndividualDeckView');
         }
     }
     render () {
+        console.log('props', this.props); 
         return (
             <View style={styles.newDeckContainer}>
                 <Text style={styles.question}>{NEW_DECK_TITLE_STR}</Text>
