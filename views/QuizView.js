@@ -5,7 +5,7 @@ import { NEW_DECK_QN_STR, NEW_DECK_ANS_STR } from '../constants/constants';
 import * as API from '../utils/api'; 
 import Question from '../models/Question'; 
 
-class IndividualDeckView extends Component {
+class QuizView extends Component {
 
     state = {
         questionInput : '',
@@ -51,4 +51,4 @@ class IndividualDeckView extends Component {
     }
 }
 
-export default IndividualDeckView;
+export default QuizView;
