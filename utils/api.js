@@ -17,22 +17,33 @@ export const getDeck = (key) => {
     return AsyncStorage.getItem(key);
 }
 
-export const addDeck = (deck) => {
-    console.log('API ADD DECK', deck); 
-    if (deck) {
-        let deckKey = getDeckKey(deck.deckId); 
-        console.log('API ADD DECK CALLING', deckKey);
-        return AsyncStorage.setItem(deckKey, JSON.stringify(deck)); 
+export async const addDeck = (deck) => {
+    try{
+        if (deck) {
+            let deckKey = getDeckKey(deck.deckId); 
+            let output = await AsyncStorage.setItem(deckKey, JSON.stringify(deck));
+            return output;  
+        }
+    } catch {
+        console.log('add deck not working');
     }
-    return Promise.reject(); 
 }
 
-export const addCard = (question, deckId) => {
-    let deckKey = getDeckKey(deckId); 
-    let deck = getDeck(deckKey); 
-    if (deck) {
-        deck.question.push(question); 
-        return AsyncStorage.setItem(deckKey, JSON.stringify(updatedDeck)); 
+export async const addCard = (question, deckId) => {
+    try{
+        let deckKey = getDeckKey(deckId); 
+        let deck = getDeck(deckKey); 
+        if (deck) {
+            if (!deck.questions || !Array.isArray(deck.questions)) {
+                deck.questions = []; 
+            }
+            deck.questions.push(question); 
+            deck.numCards = deck.questions.length; 
+            let output =  await AsyncStorage.setItem(deckKey, JSON.stringify(deck));
+            return output; 
+        }
+    } catch {
+        console.log('not working');
     }
-    return Promise.reject();
+
 }

@@ -22,10 +22,12 @@ class IndividualDeckView extends Component {
 
     onAddCard = () => {
         if (this.state.currentDeck) {
-            let qnId = currentDeck && currentDeck.question ? currentDeck.question.length: 1; 
+            let qnId = this.state.currentDeck && this.state.currentDeck.question ? this.state.currentDeck.question.length: 1; 
             let newQn = new Question(qnId, this.state.questionInput, this.state.answerInput); 
-            API.addCard(newQn, this.currentDeck.deckId).then(result => {
-                this.props.navigation.push('IndividualDeckView');
+            
+            API.addCard(newQn, this.state.currentDeck.deckId).then(result => {
+                console.log('add card', result); 
+                //this.props.navigation.navigate('DeckView', {item: updatedDeck});
             });
         }
     }
