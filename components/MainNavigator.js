@@ -52,7 +52,7 @@ const NAVIGATOR_OPTIONS = {
 
 const Tab = () => {
     if (isAndroid()) {
-        return createMaterialTopTabNavigator(IOS_TAB, NAVIGATION_OPTIONS); 
+        return createMaterialTopTabNavigator(IOS_ROUTE_CONFIG, NAVIGATOR_OPTIONS); 
     } else {
         return createBottomTabNavigator(IOS_ROUTE_CONFIG , NAVIGATOR_OPTIONS); ; 
     }
@@ -60,16 +60,25 @@ const Tab = () => {
 
 const MainNavigator = createStackNavigator({
   App: {
-        screen: Tab(),
+        screen: Tab()
   }, 
   IndividualDeckView: {
-      screen: IndividualDeckView
+      screen: IndividualDeckView,
+      navigationOptions: ({ navigation }) => ({
+        title: `Add Card`,
+      }),
   },
   DeckView: {
-    screen: DeckView
+    screen: DeckView,
+    navigationOptions: ({ navigation }) => ({
+      title: `${navigation.state.params.title}`,
+    })
   }, 
   QuizView: {
-    screen: QuizView
+    screen: QuizView,
+    navigationOptions: ({ navigation }) => ({
+      title: `Quiz`,
+    })
   }
 });
 

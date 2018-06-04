@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import ListItem from '../components/ListItem'; 
 import Deck from '../models/Deck'; 
 import * as API from '../utils/api';
+import { styles } from '../styles/styles';
 
 class DeckListView extends Component {
     
@@ -25,16 +26,25 @@ class DeckListView extends Component {
     }
 
     onDeckSelected = (item) => {
-        console.log('on deck selected', item); 
-        this.props.navigation.navigate('DeckView', {item: item}); 
+        this.props.navigation.navigate('DeckView', {item: item, title: item.title}); 
     }
 
     renderItem = ({ item }) => {
         return <ListItem item = {item} key={`list-item-${item.deckId}`} onPress={() => {this.onDeckSelected(item);}}/>
     }
 
+    renderNoItem = () => {
+        return (
+            <View style={styles.container}>
+                <Text style={styles.text}>No deck created</Text>
+            </View>
+        );
+    }
+
     render() {
-        return <FlatList style={{flex: 1}} data={this.state.decks} renderItem={this.renderItem}/>; 
+        return this.state.decks.length > 0 ? 
+        <FlatList style={{flex: 1}} data={this.state.decks} renderItem={this.renderItem}/> : 
+        this.renderNoItem(); 
     }
 }
 

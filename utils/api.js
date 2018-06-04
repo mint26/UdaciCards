@@ -17,33 +17,29 @@ export const getDeck = (key) => {
     return AsyncStorage.getItem(key);
 }
 
-export async const addDeck = (deck) => {
-    try{
-        if (deck) {
-            let deckKey = getDeckKey(deck.deckId); 
-            let output = await AsyncStorage.setItem(deckKey, JSON.stringify(deck));
-            return output;  
-        }
-    } catch {
-        console.log('add deck not working');
+export const addDeck = (deck) => {
+
+    if (deck) {
+        let deckKey = getDeckKey(deck.deckId); 
+        let output = AsyncStorage.setItem(deckKey, JSON.stringify(deck));
+        return output;  
     }
 }
 
-export async const addCard = (question, deckId) => {
-    try{
-        let deckKey = getDeckKey(deckId); 
-        let deck = getDeck(deckKey); 
+export const addCard = (question, deckId) => {
+    let deckKey = getDeckKey(deckId); 
+    return getDeck(deckKey).then(item => {
+        let deck = JSON.parse(item);  
+        
         if (deck) {
             if (!deck.questions || !Array.isArray(deck.questions)) {
                 deck.questions = []; 
             }
             deck.questions.push(question); 
             deck.numCards = deck.questions.length; 
-            let output =  await AsyncStorage.setItem(deckKey, JSON.stringify(deck));
+            let output =  AsyncStorage.setItem(deckKey, JSON.stringify(deck));
             return output; 
         }
-    } catch {
-        console.log('not working');
-    }
-
+    })
+    
 }

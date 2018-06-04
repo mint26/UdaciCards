@@ -26,15 +26,14 @@ class IndividualDeckView extends Component {
             let newQn = new Question(qnId, this.state.questionInput, this.state.answerInput); 
             
             API.addCard(newQn, this.state.currentDeck.deckId).then(result => {
-                console.log('add card', result); 
-                //this.props.navigation.navigate('DeckView', {item: updatedDeck});
+                this.props.navigation.goBack(); 
             });
         }
     }
 
     render(){
         return (
-                <View style={styles.card}>
+                <View style={StyleSheet.flatten([styles.container, viewStyles.container])}>
                     <TextInput 
                         placeholder={NEW_DECK_QN_STR}
                         style={styles.input} 
@@ -52,5 +51,12 @@ class IndividualDeckView extends Component {
                 );
     }
 }
+
+const viewStyles = StyleSheet.create({
+    container: {
+        justifyContent:'auto'
+    }
+});
+
 
 export default IndividualDeckView;
