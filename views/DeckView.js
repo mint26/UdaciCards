@@ -26,7 +26,6 @@ class DeckView extends Component {
     render(){
 
         let startBtnStyle = this.state.hasQuestion ? StyleSheet.flatten([styles.button, viewStyles.button]) : StyleSheet.flatten([styles.button, viewStyles.button, viewStyles.disabled]);
-        console.log('rendering', startBtnStyle)
         return (
                 <View style={StyleSheet.flatten([styles.container, viewStyles.container])}>
                     <View style={styles.row}>
@@ -34,11 +33,11 @@ class DeckView extends Component {
                         <Text style={viewStyles.subtitle}>{`${this.state.currentDeck ? this.state.currentDeck.numCards : 0} cards`}
                         </Text>
                     </View>
-                    <TouchableOpacity style={StyleSheet.flatten([styles.button, viewStyles.button])}>
-                        <Text style={styles.buttonText} onPress={this.onAddCard}>Add Card</Text>
+                    <TouchableOpacity style={StyleSheet.flatten([styles.button, viewStyles.button])} onPress={this.onAddCard}>
+                        <Text style={styles.buttonText}>Add Card</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={startBtnStyle}>
-                        <Text style={styles.buttonText} onPress={this.onStartQuiz}>Start Quiz</Text>
+                    <TouchableOpacity style={StyleSheet.flatten([styles.button, viewStyles.button])} onPress={this.onStartQuiz}>
+                        <Text style={styles.buttonText}>Start Quiz</Text>
                     </TouchableOpacity>
                 </View>
                 );

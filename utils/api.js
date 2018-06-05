@@ -5,7 +5,12 @@ const getDeckKey = (id) => {
     return `${DECK_KEY}:${id}`; 
 }
 
-export const getDecks = () => {
+export async function getDecks(){
+    let test = await getAllDecks(); 
+    return test; 
+}
+
+function getAllDecks(){
     return AsyncStorage.getAllKeys().then(keys => {
         if (keys && keys.length > 0) {
             return AsyncStorage.multiGet(keys); 
@@ -17,11 +22,10 @@ export const getDeck = (key) => {
     return AsyncStorage.getItem(key);
 }
 
-export const addDeck = (deck) => {
-
+export async function addDeck(deck){
     if (deck) {
         let deckKey = getDeckKey(deck.deckId); 
-        let output = AsyncStorage.setItem(deckKey, JSON.stringify(deck));
+        let output = await AsyncStorage.setItem(deckKey, JSON.stringify(deck));
         return output;  
     }
 }

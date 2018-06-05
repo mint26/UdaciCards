@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Platform, TouchableOpacity, TextInput } from 'react-native'; 
+import { View, Text, StyleSheet, Platform, TouchableOpacity, TextInput, Animated } from 'react-native'; 
 import { styles, variables } from '../styles/styles';
 import { NEW_DECK_QN_STR, NEW_DECK_ANS_STR } from '../constants/constants'; 
 import * as API from '../utils/api'; 
 import Question from '../models/Question'; 
-import { white, red, black, green} from '../utils/colors'; 
+import { white, red, black, green, purple} from '../utils/colors'; 
 
 class QuizView extends Component {
 
@@ -17,16 +17,31 @@ class QuizView extends Component {
         numCorrect: 0,
     }
 
-    componentDidMount(){
+    componentDidMount = () => {
         let item = this.props.navigation.getParam('item'); 
         if (item) {
             let currentQuestion = item.questions && item.questions.length > 0 ? item.questions[0] : null;
             this.setState({currentDeck : item, currentQuestion: currentQuestion}); 
         }
+
+        this.animatedValue = new Animated.Value(0);
+        this.value = 0;
+        this.animatedValue.addListener(({ value }) => {
+            this.value = value;
+        })
+        this.frontInterpolate = this.animatedValue.interpolate({
+            inputRange: [0, 180],
+            outputRange: ['0deg', '180deg']
+        });
+        this.backInterpolate = this.animatedValue.interpolate({
+            inputRange: [0, 180],
+            outputRange: ['180deg', '360deg']
+        });
     }
 
     onViewAnswer = () => {
         this.setState({showQuestion: false}); 
+        this.flipCard(); 
     }
 
     onNextCard = (increment) => {
@@ -38,19 +53,53 @@ class QuizView extends Component {
         } else {
             this.setState({endOfDeck : true, numCorrect: numCorrect}); 
         }
+        this.flipCard(); 
     }
 
     endOfDeck = () => {
         this.props.navigation.goBack(); 
     }
 
-    render(){
+    flipCard = () => {
+        if (this.value >= 90) { 
+          Animated.spring(this.animatedValue,{
+            toValue: 0,
+            friction: 8,
+            tension: 10
+          }).start();
+        } else {
+          Animated.spring(this.animatedValue,{
+            toValue: 180,
+            friction: 8,
+            tension: 10
+          }).start();
+        }
+    
+    }
 
+    render(){
+ 
+        const frontAnimatedStyle = {
+            transform: [{ rotateY: this.frontInterpolate}]
+        }
+        const backAnimatedStyle = {
+            transform: [{ rotateY: this.backInterpolate}]
+        }
+        
+        let style1 = [viewStyles.flipCard]; 
+        if (this.frontInterpolate) {
+            style1.push(frontAnimatedStyle); 
+        }
+
+        let style2 = [viewStyles.flipCard, viewStyles.flipCardBack];
+        if (this.backInterpolate) {
+            style2.unshift(backAnimatedStyle); 
+        }
         let numQns = this.state.currentDeck && this.state.currentDeck.questions ? this.state.currentDeck.questions.length : 0;
         if (this.state.endOfDeck) {
             let score = `You have ${this.state.numCorrect} out of ${numQns} correct questions`
             return (
-                <View style={StyleSheet.flatten([styles.container, viewStyles.container])}>
+                <View style={[styles.container, viewStyles.container]}>
                     <View style={viewStyles.header}>
                         <Text style={viewStyles.headerText}>{displayIndex}</Text>
                     </View>
@@ -71,43 +120,49 @@ class QuizView extends Component {
         let displayType = this.state.showQuestion ? 'Question' : 'Answer'; 
 
         let displayIndex = `${this.state.currentIndex + 1} / ${numQns}`;
-        return (
-                <View style={StyleSheet.flatten([styles.container, viewStyles.container])}>
-                    <View style={viewStyles.header}>
-                        <Text style={viewStyles.headerText}>{displayIndex}</Text>
-                    </View>
-                    <View style={viewStyles.textPanel}>
-                        <Text style={viewStyles.qnText}>{displayText}</Text>
-                        <Text style={viewStyles.textType}>{displayType}</Text>
-                    </View>
-                    {this.state.showQuestion && (
-                        <View style={viewStyles.buttonPanel}>
-                            <TouchableOpacity style={StyleSheet.flatten([styles.button, viewStyles.button])}>
-                                <Text style={styles.buttonText} onPress={this.onViewAnswer}>View</Text>
-                            </TouchableOpacity>
+        return this.state.showQuestion ?  (
+                        <View style={[styles.container, viewStyles.container]}>
+                            <View style={viewStyles.header}>
+                                <Text style={viewStyles.headerText}>{displayIndex}</Text>
+                            </View>
+                            <Animated.View style={[style1, viewStyles.textPanel]}>
+                                <Text style={viewStyles.qnText}>{displayText}</Text>
+                                <Text style={viewStyles.textType}>{displayType}</Text>
+                            </Animated.View >
+                            <View style={viewStyles.buttonPanel}>
+                                <TouchableOpacity style={StyleSheet.flatten([styles.button, viewStyles.button])} onPress={this.onViewAnswer}>
+                                    <Text style={styles.buttonText}>View</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
-                    )}
-                    {!this.state.showQuestion && (
-                        <View style={viewStyles.buttonPanel}>
-                            <TouchableOpacity style={StyleSheet.flatten([styles.button, viewStyles.button, viewStyles.correctBtn])}>
-                                <Text style={styles.buttonText} onPress={() => this.onNextCard(1)}>Correct</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={StyleSheet.flatten([styles.button, viewStyles.button, viewStyles.wrongBtn])}>
-                                <Text style={styles.buttonText} onPress={() => this.onNextCard(0)}>Incorrect</Text>
-                            </TouchableOpacity>
+                        ) : (
+                        <View style={[styles.container, viewStyles.container]}>
+                            <View style={viewStyles.header}>
+                                <Text style={viewStyles.headerText}>{displayIndex}</Text>
+                            </View>
+                            <Animated.View style={[style2,viewStyles.textPanel]}>
+                                <Text style={viewStyles.qnText}>{displayText}</Text>
+                                <Text style={viewStyles.textType}>{displayType}</Text>
+                            </Animated.View>
+                            <View style={viewStyles.buttonPanel}>
+                                <TouchableOpacity style={StyleSheet.flatten([styles.button, viewStyles.button, viewStyles.correctBtn])}  onPress={() => this.onNextCard(1)}>
+                                    <Text style={styles.buttonText}>Correct</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={StyleSheet.flatten([styles.button, viewStyles.button, viewStyles.wrongBtn])} onPress={() => this.onNextCard(0)}>
+                                    <Text style={styles.buttonText} >Incorrect</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
-                    )}
-                </View>
                 );
     }
 }
 
 const viewStyles = StyleSheet.create({
     container:{
-        backgroundColor: white,
+        backgroundColor: white
     },
     header:{
-        flex: 0.2,
+        flex: 0.1,
         width:'100%',
         textAlign:'left',
     },
@@ -116,15 +171,16 @@ const viewStyles = StyleSheet.create({
         padding: variables.normalGap
     },
     textPanel:{
-        flex: 0.4,
-        width:'100%',
+        flex: 0.5,
+        width:'90%',
         textAlign:'center',
     },
     qnText : {
         fontSize: variables.largeFontSize,
         fontWeight: 'bold', 
         width:'100%',
-        textAlign:'center'
+        textAlign:'center',
+        color:white
     },
     button: { 
         justifyContent: 'center', 
@@ -145,7 +201,25 @@ const viewStyles = StyleSheet.create({
     }, 
     buttonPanel: {
         width: '100%', 
-        flex: 0.4, 
+        flex: 0.4
+    },
+    flipCard: {
+        width: '100%',
+        height: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: purple,
+        backfaceVisibility: 'hidden',
+        borderRadius: variables.defaultBorderRadius
+      },
+    flipCardBack: {
+        backgroundColor: purple
+    },
+    flipText: {
+        width: 90,
+        fontSize: 20,
+        color: purple,
+        fontWeight: 'bold',
     }
 });
 
