@@ -5,12 +5,32 @@ import { styles, variables } from '../styles/styles';
 import { limeGreen } from '../utils/colors'; 
 import * as API from '../utils/api'; 
 import Deck from '../models/Deck'; 
-
+import Modal from '../components/Modal'; 
 
 class NewDeckView extends Component {
 
     state = {
-        questionInput: ''
+        questionInput: '', 
+        redirectBack: false, 
+        addedSuccessfully: false
+    }
+
+    modalLeftBtn = {
+        text: 'Done', 
+        action: this.onAddNewDeck
+    }
+
+    modalRightBtn = {
+        text: 'Done', 
+        action: this.onClose
+    }
+
+    onAddNewDeck = () => {
+        console.log('add new deck');
+    }
+
+    onClose = () => {
+        console.log('close'); 
     }
 
     onAddDeck = () => {
@@ -21,12 +41,11 @@ class NewDeckView extends Component {
                 this.props.navigation.navigate('DeckListView'); 
                 
             })
-
-            
         }
     }
+
     render () {
-        return (
+        return this.state.addedSuccessfully ? (
             <View style={styles.container}>
                 <Text style={viewStyles.questionText}>{NEW_DECK_TITLE_STR}</Text>
                 <TextInput 
@@ -37,6 +56,10 @@ class NewDeckView extends Component {
                 <TouchableOpacity style={styles.button} onPress={this.onAddDeck}>
                     <Text style={styles.buttonText}>Add Deck</Text>
                 </TouchableOpacity>
+            </View>
+        ):(
+            <View>
+                <Modal leftBtn={this.modalLeftBtn} rightBtn={this.modalRightBtn} message="Success created deck!"/>
             </View>
         )
     }

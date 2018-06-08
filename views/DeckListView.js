@@ -10,6 +10,7 @@ class DeckListView extends Component {
     state = {
         decks : [] 
     }; 
+    _keyExtractor = (item, index) => `list-item-${index}`;
 
     componentDidMount(){
         API.getDecks().then(decks => {
@@ -29,8 +30,8 @@ class DeckListView extends Component {
         this.props.navigation.navigate('DeckView', {item: item, title: item.title}); 
     }
 
-    renderItem = ({ item }) => {
-        return <ListItem item = {item} key={`list-item-${item.deckId}`} onPress={() => {this.onDeckSelected(item);}}/>
+    renderItem = ({ item, index }) => {
+        return <ListItem item = {item} key={`list-item-${index}`} onPress={() => {this.onDeckSelected(item);}}/>
     }
 
     renderNoItem = () => {
@@ -43,7 +44,7 @@ class DeckListView extends Component {
 
     render() {
         return this.state.decks.length > 0 ? 
-        <FlatList style={{flex: 1}} data={this.state.decks} renderItem={this.renderItem}/> : 
+        <FlatList style={{flex: 1}} data={this.state.decks} renderItem={this.renderItem} keyExtractor={this._keyExtractor}/> : 
         this.renderNoItem(); 
     }
 }

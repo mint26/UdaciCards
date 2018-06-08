@@ -78,7 +78,7 @@ class QuizView extends Component {
     }
 
     render(){
- 
+        let renderContent = null; 
         const frontAnimatedStyle = {
             transform: [{ rotateY: this.frontInterpolate}]
         }
@@ -96,31 +96,31 @@ class QuizView extends Component {
             style2.unshift(backAnimatedStyle); 
         }
         let numQns = this.state.currentDeck && this.state.currentDeck.questions ? this.state.currentDeck.questions.length : 0;
+        let displayIndex = `${this.state.currentIndex + 1} / ${numQns}`;
         if (this.state.endOfDeck) {
             let score = `You have ${this.state.numCorrect} out of ${numQns} correct questions`
-            return (
+            renderContent = (
                 <View style={[styles.container, viewStyles.container]}>
                     <View style={viewStyles.header}>
                         <Text style={viewStyles.headerText}>{displayIndex}</Text>
                     </View>
-                    <View style={viewStyles.textPanel}>
-                        <Text style={viewStyles.qnText}>{score}</Text>
+                    <View style={[viewStyles.textPanel,viewStyles.resultPanel]}>
+                        <Text style={viewStyles.resultText}>{score}</Text>
                     </View>
                     <View style={viewStyles.buttonPanel}>
-                        <TouchableOpacity style={StyleSheet.flatten([styles.button, viewStyles.button])}>
-                            <Text style={styles.buttonText} onPress={this.endOfDeck}>Back</Text>
+                        <TouchableOpacity style={StyleSheet.flatten([styles.button, viewStyles.button])} onPress={this.endOfDeck}>
+                            <Text style={styles.buttonText}>Back</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
             )
-        }
-        let displayText = this.state.showQuestion && this.state.currentQuestion ? this.state.currentQuestion.question : 
-                        this.state.currentQuestion ? this.state.currentQuestion.answer : ''; 
-        
-        let displayType = this.state.showQuestion ? 'Question' : 'Answer'; 
+        } else {
+            let displayText = this.state.showQuestion && this.state.currentQuestion ? this.state.currentQuestion.question : 
+            this.state.currentQuestion ? this.state.currentQuestion.answer : ''; 
 
-        let displayIndex = `${this.state.currentIndex + 1} / ${numQns}`;
-        return this.state.showQuestion ?  (
+            let displayType = this.state.showQuestion ? 'Question' : 'Answer'; 
+
+            renderContent = this.state.showQuestion ?  (
                         <View style={[styles.container, viewStyles.container]}>
                             <View style={viewStyles.header}>
                                 <Text style={viewStyles.headerText}>{displayIndex}</Text>
@@ -154,6 +154,10 @@ class QuizView extends Component {
                             </View>
                         </View>
                 );
+        }
+
+        return renderContent; 
+        
     }
 }
 
@@ -164,16 +168,26 @@ const viewStyles = StyleSheet.create({
     header:{
         flex: 0.1,
         width:'100%',
-        textAlign:'left',
     },
     headerText:{
         fontSize: variables.normalFontSize, 
-        padding: variables.normalGap
+        padding: variables.normalGap,
+        color: black
     },
     textPanel:{
         flex: 0.5,
-        width:'90%',
+        width:'90%'
+    },
+    resultText:{
+        fontSize: variables.largeFontSize,
+        fontWeight: 'bold', 
+        width:'100%',
         textAlign:'center',
+        color:black
+    },
+    resultPanel:{
+        justifyContent:'center', 
+        alignItems:'center'
     },
     qnText : {
         fontSize: variables.largeFontSize,

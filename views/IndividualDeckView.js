@@ -53,9 +53,9 @@ class IndividualDeckView extends Component {
 }
 
 const viewStyles = StyleSheet.create({
-    container: {
-        justifyContent:'auto'
-    }
+    // container: {
+    //     justifyContent:'auto'
+    // }
 });
 
 
