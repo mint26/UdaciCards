@@ -1,9 +1,9 @@
 import { Platform } from "react-native";
 import { Notifications, Permissions } from 'expo'
 import { AsyncStorage } from 'react-native'
+import { getLastVisitedDate } from './api'; 
 
 const NOTIFICATION_KEY = 'UdaciCards:notifications'
-const LAST_VISIT = 'UdaciCards:last_visit_datetime';
 export const isAndroid = () => {
     return Platform.OS !== 'ios'; 
 }
@@ -18,10 +18,13 @@ export const setLocalNotification = () => {
               if (status === 'granted') {
                 Notifications.cancelAllScheduledNotificationsAsync();
  
-                let tomorrow = new Date();
-                tomorrow.setDate(tomorrow.getDate());
-                tomorrow.setHours(24);
-  
+                let lastVisitedDate = getLastVisitedDate(); 
+                let tomorrow = new Date(); 
+                if (lastVisitedDate) {
+                  tomorrow.setDate(lastVisitedDate.getDate());
+                }
+                tomorrow.setHours(1);
+
                 Notifications.scheduleLocalNotificationAsync(
                   createNotification(),
                   {
@@ -37,10 +40,6 @@ export const setLocalNotification = () => {
       })
   }
 
-export const updateLastVisit = () => {
-    let currentDate = new Date(); 
-    AsyncStorage.setItem(LAST_VISIT, JSON.stringify(currentDate)); 
-}
 const createNotification = () => {
 return {
     title: 'UdaciCards - Reminder to study!',

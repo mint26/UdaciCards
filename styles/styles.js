@@ -8,6 +8,7 @@ smallFontSize: 10,
 largeGap: 30,
 normalGap: 20, 
 smallGap: 10,
+xsmallGap: 5,
 noGap: 0,
 largeBorderRadius: 15,
 defaultBorderRadius: 10,
@@ -63,7 +64,7 @@ export const styles = StyleSheet.create({
     flex: 1, 
     justifyContent: 'center',
     alignItems: 'center',
-    padding: variables.normalGap,
+    padding: variables.largeGap,
     borderBottomColor: black, 
     borderBottomWidth:2
   },
@@ -72,7 +73,7 @@ export const styles = StyleSheet.create({
     borderBottomColor: purple,
     borderRadius: variables.defaultBorderRadius,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   }, 
   listItemTitle : {
       fontSize: variables.normalFontSize, 

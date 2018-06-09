@@ -4,7 +4,7 @@ import { styles, variables } from '../styles/styles';
 import { NEW_DECK_QN_STR, NEW_DECK_ANS_STR } from '../constants/constants'; 
 import * as API from '../utils/api'; 
 import Question from '../models/Question'; 
-import { white, red, black, green, purple} from '../utils/colors'; 
+import { white, red, black, green, purple, lightGray} from '../utils/colors'; 
 
 class QuizView extends Component {
 
@@ -56,7 +56,7 @@ class QuizView extends Component {
         this.flipCard(); 
     }
 
-    endOfDeck = () => {
+    onBack = () => {
         this.props.navigation.goBack(); 
     }
 
@@ -100,7 +100,7 @@ class QuizView extends Component {
         if (this.state.endOfDeck) {
             let score = `You have ${this.state.numCorrect} out of ${numQns} correct questions`
             renderContent = (
-                <View style={[styles.container, viewStyles.container]}>
+                <View style={styles.container}>
                     <View style={viewStyles.header}>
                         <Text style={viewStyles.headerText}>{displayIndex}</Text>
                     </View>
@@ -108,12 +108,27 @@ class QuizView extends Component {
                         <Text style={viewStyles.resultText}>{score}</Text>
                     </View>
                     <View style={viewStyles.buttonPanel}>
-                        <TouchableOpacity style={StyleSheet.flatten([styles.button, viewStyles.button])} onPress={this.endOfDeck}>
+                        <TouchableOpacity style={StyleSheet.flatten([styles.button, viewStyles.button])} onPress={this.onBack}>
                             <Text style={styles.buttonText}>Back</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
             )
+        } else if (numQns === 0) {
+            let msg = "There isn't any card added to this deck. Please add a new card";
+            renderContent = (
+                <View style={styles.container}>
+                    <View style={[viewStyles.textPanel,viewStyles.resultPanel]}>
+                        <Text style={viewStyles.resultText}>{msg}</Text>
+                    </View>
+                    <View style={viewStyles.buttonPanel}>
+                        <TouchableOpacity style={StyleSheet.flatten([styles.button, viewStyles.button])} onPress={this.onBack}>
+                            <Text style={styles.buttonText}>Back</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            )
+
         } else {
             let displayText = this.state.showQuestion && this.state.currentQuestion ? this.state.currentQuestion.question : 
             this.state.currentQuestion ? this.state.currentQuestion.answer : ''; 
@@ -121,7 +136,7 @@ class QuizView extends Component {
             let displayType = this.state.showQuestion ? 'Question' : 'Answer'; 
 
             renderContent = this.state.showQuestion ?  (
-                        <View style={[styles.container, viewStyles.container]}>
+                        <View style={styles.container}>
                             <View style={viewStyles.header}>
                                 <Text style={viewStyles.headerText}>{displayIndex}</Text>
                             </View>
@@ -136,7 +151,7 @@ class QuizView extends Component {
                             </View>
                         </View>
                         ) : (
-                        <View style={[styles.container, viewStyles.container]}>
+                        <View style={styles.container}>
                             <View style={viewStyles.header}>
                                 <Text style={viewStyles.headerText}>{displayIndex}</Text>
                             </View>
@@ -162,9 +177,6 @@ class QuizView extends Component {
 }
 
 const viewStyles = StyleSheet.create({
-    container:{
-        backgroundColor: white
-    },
     header:{
         flex: 0.1,
         width:'100%',

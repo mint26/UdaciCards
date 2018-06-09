@@ -26,8 +26,22 @@ class DeckListView extends Component {
         });
     }
 
+    componentDidUpdate(){
+        API.getDecks().then(decks => {
+            if (decks.length > 0) {
+                let items = decks.map(deck => {
+                    let deckItem = JSON.parse(deck[1]); 
+                    if (deckItem){
+                        return new Deck(deckItem.deckId, deckItem.title, deckItem.questions);; 
+                    }
+                }); 
+                this.setState({decks : items}); 
+            }
+        });
+    }
+
     onDeckSelected = (item) => {
-        this.props.navigation.navigate('DeckView', {item: item, title: item.title}); 
+        this.props.navigation.navigate('DeckView', {itemId: item.deckId, title: item.title}); 
     }
 
     renderItem = ({ item, index }) => {

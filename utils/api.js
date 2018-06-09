@@ -1,13 +1,13 @@
 import { AsyncStorage } from 'react-native'
-import { DECK_KEY, UDACI_STORE } from '../constants/constants'; 
+import { DECK_KEY, UDACI_STORE, LAST_VISITED_DATE} from '../constants/constants'; 
 
 const getDeckKey = (id) => {
     return `${DECK_KEY}:${id}`; 
 }
 
 export async function getDecks(){
-    let test = await getAllDecks(); 
-    return test; 
+    let allDecks = await getAllDecks(); 
+    return allDecks; 
 }
 
 function getAllDecks(){
@@ -18,8 +18,10 @@ function getAllDecks(){
     })
 }
 
-export const getDeck = (key) => {
-    return AsyncStorage.getItem(key);
+export async function getDeck(deckId) {
+    let deckKey = await getDeckKey(deckId); 
+    let deck = await AsyncStorage.getItem(deckKey);
+    return deck; 
 }
 
 export async function addDeck(deck){
@@ -30,20 +32,26 @@ export async function addDeck(deck){
     }
 }
 
-export const addCard = (question, deckId) => {
-    let deckKey = getDeckKey(deckId); 
-    return getDeck(deckKey).then(item => {
-        let deck = JSON.parse(item);  
-        
+export async function addCard(question, deckId){
+    return await getDeck(deckId).then(item => {
+        let deck = JSON.parse(item);    
         if (deck) {
             if (!deck.questions || !Array.isArray(deck.questions)) {
                 deck.questions = []; 
             }
             deck.questions.push(question); 
             deck.numCards = deck.questions.length; 
-            let output =  AsyncStorage.setItem(deckKey, JSON.stringify(deck));
+            let output = AsyncStorage.setItem(deckKey, JSON.stringify(deck));
             return output; 
         }
-    })
-    
+    });
+}
+
+export async function setLastVisitedDate() {
+    let visitedDate = new Date(); 
+    return await AsyncStorage.setItem(LAST_VISITED_DATE, JSON.stringify(visitedDate)); 
+}
+
+export async function getLastVisitedDate() {
+    return await AsyncStorage.getItem(LAST_VISITED_DATE); 
 }

@@ -4,17 +4,19 @@ import NewDeckView from './views/NewDeckView';
 import StatusBar from './components/StatusBar'; 
 import { purple, limeGreen } from './utils/colors'; 
 import MainNavigator from './components/MainNavigator'; 
-import { setLocalNotification, updateLastVisit } from './utils/utils'; 
+import { setLocalNotification } from './utils/utils'; 
+import { setLastVisitedDate } from './utils/api'; 
 
 export default class App extends React.Component {
 
   componentDidMount() {
-    updateLastVisit(); 
-    setLocalNotification();
+    setLastVisitedDate().then(() => {
+      setLocalNotification();
+    }); 
   }
 
   componentDidUpdate() {
-    updateLastVisit(); 
+    setLastVisitedDate(); 
   }
 
   render() {

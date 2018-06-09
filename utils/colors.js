@@ -6,3 +6,4 @@ export const blue = "#5998C5";
 export const white = "#FFFFFF"; 
 export const black = "#000000"; 
 export const green = "#228B22"; 
+export const lightGray = "#d3d3d3";
