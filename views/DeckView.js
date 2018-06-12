@@ -9,25 +9,37 @@ class DeckView extends Component {
     state = {
         currentDeck: null, 
         hasQuestion: false, 
-        currentDeckId: ''
+        currentDeckId: '',
+        hasUpdated: false
     }
 
-    componentDidMount() { 
-        console.log('test in mount');        
+    componentDidMount() {       
         let itemId = this.props.navigation.getParam('itemId');
         if (itemId) {
             API.getDeck(itemId).then((item) => {
-                this.setState({currentDeck: item, hasQuestion: item.questions && item.questions.length > 0 ? true : false, currentDeckId: itemId});
+                let obj = JSON.parse(item); 
+                this.setState({currentDeck: obj, hasQuestion: obj.questions && obj.questions.length > 0 ? true : false, currentDeckId: itemId});
             })
         }
     }
 
     componentDidUpdate(){
-        console.log('did update'); 
+        if (this.state.currentDeckId && !this.state.hasUpdated) {
+            return API.getDeck(this.state.currentDeckId).then((item) => {
+                let obj = JSON.parse(item);
+                console.log('GET DECK', obj); 
+                this.setState({
+                                currentDeck: obj, 
+                                hasQuestion: obj.questions && obj.questions.length > 0 ? true : false, 
+                                hasUpdated: true
+                            });
+            })
+        }
+
     }
 
     onAddCard = () => {
-        this.props.navigation.navigate('IndividualDeckView', {item: this.state.currentDeck});
+        this.props.navigation.navigate('IndividualDeckView', {item: JSON.stringify(this.state.currentDeck)});
     }
 
     onStartQuiz = () => {
@@ -36,13 +48,13 @@ class DeckView extends Component {
 
     render(){
         let startBtnStyle = this.state.hasQuestion ? StyleSheet.flatten([styles.button, viewStyles.button]) : StyleSheet.flatten([styles.button, viewStyles.button, viewStyles.disabled]);
-        let title = this.state.currentDeck ? this.state.currentDeck.title : 'k'; 
-
+        let obj = this.state.currentDeck ? this.state.currentDeck: null;
+        console.log('render deck view', obj); 
         return (
                 <View style={styles.container}>
                     <View style={styles.row}>
-                        <Text style={viewStyles.title}>{title}</Text>
-                        <Text style={viewStyles.subtitle}>{`${this.state.currentDeck ? this.state.currentDeck.numCards : 0} cards`}
+                        <Text style={viewStyles.title}>{obj ? obj.title : ''}</Text>
+                        <Text style={viewStyles.subtitle}>{`${obj ? obj.numCards : 0} cards`}
                         </Text>
                     </View>
                     <TouchableOpacity style={[styles.button, viewStyles.button]} onPress={this.onAddCard}>

@@ -10,13 +10,17 @@ import { setLastVisitedDate } from './utils/api';
 export default class App extends React.Component {
 
   componentDidMount() {
-    setLastVisitedDate().then(() => {
-      setLocalNotification();
-    }); 
+    this.updateNotification();  
   }
 
   componentDidUpdate() {
-    setLastVisitedDate(); 
+    this.updateNotification(); 
+  }
+
+  updateNotification(){
+    setLastVisitedDate().then(() => {
+      setLocalNotification();
+    }); 
   }
 
   render() {

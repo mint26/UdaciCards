@@ -32,23 +32,20 @@ export async function addDeck(deck){
     }
 }
 
-export async function addCard(question, deckId){
-    return await getDeck(deckId).then(item => {
-        let deck = JSON.parse(item);    
-        if (deck) {
-            if (!deck.questions || !Array.isArray(deck.questions)) {
-                deck.questions = []; 
-            }
-            deck.questions.push(question); 
-            deck.numCards = deck.questions.length; 
-            let output = AsyncStorage.setItem(deckKey, JSON.stringify(deck));
-            return output; 
-        }
-    });
+export async function addCard(deck) {
+    let output;
+    if (deck) {
+        let deckKey = getDeckKey(deck.deckId); 
+        console.log('add card api deck', deckKey); 
+        output = await AsyncStorage.setItem(deckKey, JSON.stringify(deck));
+
+    }
+    return output; 
 }
 
 export async function setLastVisitedDate() {
     let visitedDate = new Date(); 
+    console.log('last visisted date', visitedDate); 
     return await AsyncStorage.setItem(LAST_VISITED_DATE, JSON.stringify(visitedDate)); 
 }
 

@@ -44,8 +44,15 @@ class IndividualDeckView extends Component {
         if (this.state.currentDeck) {
             let qnId = this.state.currentDeck && this.state.currentDeck.question ? this.state.currentDeck.question.length: 1; 
             let newQn = new Question(qnId, this.state.questionInput, this.state.answerInput); 
-            
-            API.addCard(newQn, this.state.currentDeck.deckId).then(result => {
+            let updatedDeck = JSON.parse(this.state.currentDeck); 
+            if (!updatedDeck.questions) {
+                updatedDeck.questions = [];
+            }
+            updatedDeck.questions.push(newQn); 
+            updatedDeck.numCards = updatedDeck.questions.length; 
+            console.log('============ UPDATED DECK =======');
+            console.log(updatedDeck); 
+            API.addCard(updatedDeck).then(result => {
                 this.setState({showModal: true, questionInput:'', answerInput: ''});  
             });
         }

@@ -8,36 +8,34 @@ export const isAndroid = () => {
     return Platform.OS !== 'ios'; 
 }
 
-export const setLocalNotification = () => {
-    AsyncStorage.getItem(NOTIFICATION_KEY)
-      .then(JSON.parse)
-      .then((data) => {
-        if (data === null) {
-          Permissions.askAsync(Permissions.NOTIFICATIONS)
-            .then(({ status }) => {
-              if (status === 'granted') {
-                Notifications.cancelAllScheduledNotificationsAsync();
- 
-                let lastVisitedDate = getLastVisitedDate(); 
-                let tomorrow = new Date(); 
-                if (lastVisitedDate) {
-                  tomorrow.setDate(lastVisitedDate.getDate());
-                }
-                tomorrow.setHours(1);
+export async function setLocalNotification(){
+    console.log('in set local notification'); 
+    Permissions.askAsync(Permissions.NOTIFICATIONS)
+    .then(({ status }) => {
+      if (status === 'granted') {
+        Notifications.cancelAllScheduledNotificationsAsync();
 
-                Notifications.scheduleLocalNotificationAsync(
-                  createNotification(),
-                  {
-                    time: tomorrow,
-                    repeat: 'day',
-                  }
-                )
-  
-                AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true))
-              }
-            })
-        }
-      })
+        getLastVisitedDate().then(lastVisitedDate => {
+          let tomorrow = new Date(); 
+          let visitedDate = JSON.parse(lastVisitedDate); 
+          if (visitedDate) {
+            console.log('last visited date', typeof lastVisitedDate, lastVisitedDate, new Date(JSON.parse(lastVisitedDate))); 
+            let tomorrow = new Date(visitedDate); 
+          }
+          tomorrow.setHours(24);
+          console.log('output q', tomorrow); 
+          console.log('SET LOCAL SCHEDULE', tomorrow); 
+          Notifications.scheduleLocalNotificationAsync(
+            createNotification(),
+            {
+              time: tomorrow,
+              repeat: 'day',
+            }
+          );
+        })
+      }
+    })
+    
   }
 
 const createNotification = () => {
