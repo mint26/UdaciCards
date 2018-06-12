@@ -50,8 +50,6 @@ class IndividualDeckView extends Component {
             }
             updatedDeck.questions.push(newQn); 
             updatedDeck.numCards = updatedDeck.questions.length; 
-            console.log('============ UPDATED DECK =======');
-            console.log(updatedDeck); 
             API.addCard(updatedDeck).then(result => {
                 this.setState({showModal: true, questionInput:'', answerInput: ''});  
             });

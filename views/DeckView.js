@@ -27,7 +27,6 @@ class DeckView extends Component {
         if (this.state.currentDeckId && !this.state.hasUpdated) {
             return API.getDeck(this.state.currentDeckId).then((item) => {
                 let obj = JSON.parse(item);
-                console.log('GET DECK', obj); 
                 this.setState({
                                 currentDeck: obj, 
                                 hasQuestion: obj.questions && obj.questions.length > 0 ? true : false, 
@@ -49,7 +48,6 @@ class DeckView extends Component {
     render(){
         let startBtnStyle = this.state.hasQuestion ? StyleSheet.flatten([styles.button, viewStyles.button]) : StyleSheet.flatten([styles.button, viewStyles.button, viewStyles.disabled]);
         let obj = this.state.currentDeck ? this.state.currentDeck: null;
-        console.log('render deck view', obj); 
         return (
                 <View style={styles.container}>
                     <View style={styles.row}>

@@ -36,7 +36,6 @@ export async function addCard(deck) {
     let output;
     if (deck) {
         let deckKey = getDeckKey(deck.deckId); 
-        console.log('add card api deck', deckKey); 
         output = await AsyncStorage.setItem(deckKey, JSON.stringify(deck));
 
     }
@@ -45,7 +44,6 @@ export async function addCard(deck) {
 
 export async function setLastVisitedDate() {
     let visitedDate = new Date(); 
-    console.log('last visisted date', visitedDate); 
     return await AsyncStorage.setItem(LAST_VISITED_DATE, JSON.stringify(visitedDate)); 
 }
 

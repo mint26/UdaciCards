@@ -9,7 +9,6 @@ export const isAndroid = () => {
 }
 
 export async function setLocalNotification(){
-    console.log('in set local notification'); 
     Permissions.askAsync(Permissions.NOTIFICATIONS)
     .then(({ status }) => {
       if (status === 'granted') {
@@ -19,12 +18,9 @@ export async function setLocalNotification(){
           let tomorrow = new Date(); 
           let visitedDate = JSON.parse(lastVisitedDate); 
           if (visitedDate) {
-            console.log('last visited date', typeof lastVisitedDate, lastVisitedDate, new Date(JSON.parse(lastVisitedDate))); 
             let tomorrow = new Date(visitedDate); 
           }
           tomorrow.setHours(24);
-          console.log('output q', tomorrow); 
-          console.log('SET LOCAL SCHEDULE', tomorrow); 
           Notifications.scheduleLocalNotificationAsync(
             createNotification(),
             {
