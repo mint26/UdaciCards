@@ -14,7 +14,7 @@ class DeckListView extends Component {
 
     componentDidMount(){
         API.getDecks().then(decks => {
-            if (decks.length > 0) {
+            if (decks && decks.length > 0) {
                 let items = decks.map(deck => {
                     let deckItem = JSON.parse(deck[1]); 
                     if (deckItem){
@@ -23,19 +23,23 @@ class DeckListView extends Component {
                 }); 
                 this.setState({decks : items}); 
             }
+        })
+        .catch(err => {
+            console.log('ERROR', err); 
         });
     }
 
     componentDidUpdate(){
         API.getDecks().then(decks => {
-            if (decks.length > 0) {
+            if (decks && decks.length > 0) {
                 let items = decks.map(deck => {
                     let deckItem = JSON.parse(deck[1]); 
                     if (deckItem){
                         return new Deck(deckItem.deckId, deckItem.title, deckItem.questions);; 
                     }
                 }); 
-                this.setState({decks : items}); 
+                if (this.state.decks.length !== decks.length)
+                    this.setState({decks : items}); 
             }
         });
     }

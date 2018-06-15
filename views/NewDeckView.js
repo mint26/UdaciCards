@@ -14,7 +14,8 @@ class NewDeckView extends Component {
         redirectBack: false, 
         addedSuccessfully: false,
         showModal: false,
-        createdDeckName: ''
+        createdDeckName: '', 
+        createdDeckId: ''
     }
 
     onAddNewDeck = () => {
@@ -23,7 +24,7 @@ class NewDeckView extends Component {
 
     onClose = () => {
         this.setState({showModal: false}); 
-        this.props.navigation.navigate('DeckListView'); 
+        this.props.navigation.navigate('DeckView', {itemId: this.state.createdDeckId, title: this.state.createdDeckName}); 
     }
 
 
@@ -41,14 +42,14 @@ class NewDeckView extends Component {
         if (this.state.questionInput) {
             let newDeck = new Deck(this.state.questionInput, this.state.questionInput); 
             API.addDeck(newDeck).then(result => {
-                this.setState({questionInput:'', createdDeckName: newDeck.title, showModal: true}); 
+                this.setState({questionInput:'', createdDeckName: newDeck.title,createdDeckId: newDeck.deckId, showModal: true}); 
                 // this.props.navigation.navigate('DeckListView'); 
-                
             })
         }
     }
 
     render () {
+        let isDisabled = !this.state.questionInput;
         return !this.state.showModal ? (
             <View style={styles.container}>
                 <Text style={viewStyles.questionText}>{NEW_DECK_TITLE_STR}</Text>
@@ -57,12 +58,12 @@ class NewDeckView extends Component {
                     placeholder={NEW_DECK_TITLE_PLACEHOLDER_STR}
                     onChangeText={(questionInput) => this.setState({questionInput})}
                 />
-                <TouchableOpacity style={styles.button} onPress={this.onAddDeck}>
+                <TouchableOpacity style={styles.button} onPress={this.onAddDeck} disabled={isDisabled}>
                     <Text style={styles.buttonText}>Add Deck</Text>
                 </TouchableOpacity>
             </View>
         ):(
-            <Modal leftBtn={this.modalLeftBtn} rightBtn={this.modalRightBtn} message={`Successfully created ${this.state.createdDeckName}!`}visible={this.state.showModal}/>
+            <Modal leftBtn={this.modalLeftBtn} rightBtn={this.modalRightBtn} message={`Successfully created ${this.state.createdDeckName}!`} visible={this.state.showModal}/>
         )
     }
 }

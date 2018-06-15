@@ -5,7 +5,7 @@ import { NEW_DECK_QN_STR, NEW_DECK_ANS_STR } from '../constants/constants';
 import * as API from '../utils/api'; 
 import Question from '../models/Question'; 
 import Modal from '../components/Modal'; 
-class IndividualDeckView extends Component {
+class NewCardView extends Component {
 
     state = {
         questionInput : '',
@@ -17,7 +17,8 @@ class IndividualDeckView extends Component {
     componentDidMount(){
         let item = this.props.navigation.getParam('item'); 
         if (item) {
-            this.setState({currentDeck : item}); 
+            let deck = JSON.parse(item); 
+            this.setState({currentDeck : deck}); 
         }
     }
 
@@ -27,7 +28,9 @@ class IndividualDeckView extends Component {
 
     onClose = () => {
         this.setState({showModal: false}); 
-        this.props.navigation.navigate('DeckView', {itemId: this.currentDeck ? this.currentDeck.deckId : '', title: this.currentDeck ? this.currentDeck.title : ''});  
+        let id = this.state.currentDeck ? this.state.currentDeck.deckId : ''; 
+        let title = this.state.currentDeck ? this.state.currentDeck.title : ''; 
+        this.props.navigation.navigate('DeckView', {itemId: id, title: title});  
     }
 
     modalLeftBtn = {
@@ -41,10 +44,10 @@ class IndividualDeckView extends Component {
     }
 
     onAddCard = () => {
-        if (this.state.currentDeck) {
+        if (this.state.currentDeck && this.state.questionInput && this.state.answerInput) {
             let qnId = this.state.currentDeck && this.state.currentDeck.question ? this.state.currentDeck.question.length: 1; 
             let newQn = new Question(qnId, this.state.questionInput, this.state.answerInput); 
-            let updatedDeck = JSON.parse(this.state.currentDeck); 
+            let updatedDeck = this.state.currentDeck; 
             if (!updatedDeck.questions) {
                 updatedDeck.questions = [];
             }
@@ -57,6 +60,7 @@ class IndividualDeckView extends Component {
     }
 
     render(){
+        let isDisabled = !this.state.questionInput || !this.state.answerInput; 
         return !this.state.showModal ? (
                 <View style={styles.container}>
                     <TextInput 
@@ -69,15 +73,15 @@ class IndividualDeckView extends Component {
                         style={styles.input} 
                         onChangeText={(answerInput) => this.setState({answerInput})}
                     />
-                    <TouchableOpacity style={styles.button} onPress={this.onAddCard}>
+                    <TouchableOpacity style={styles.button} onPress={this.onAddCard} disabled={isDisabled}>
                         <Text style={styles.buttonText} >Submit</Text>
                     </TouchableOpacity>
                 </View>
                 ):
                 (
-                    <Modal leftBtn={this.modalLeftBtn} rightBtn={this.modalRightBtn} message={`Successfully added card to ${this.state.currentDeck ? this.state.currentDeck.title : ''} deck!`}visible={this.state.showModal}/>
+                    <Modal leftBtn={this.modalLeftBtn} rightBtn={this.modalRightBtn} message={`New card added successfully!`} visible={this.state.showModal}/>
                 );
     }
 }
 
-export default IndividualDeckView;
+export default NewCardView;

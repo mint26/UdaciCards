@@ -4,13 +4,20 @@ import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { white, purple } from '../utils/colors'; 
 import NewDeckView from '../views/NewDeckView'; 
 import DeckListView from '../views/DeckListView'; 
-import IndividualDeckView from '../views/IndividualDeckView';
+import NewCardView from '../views/NewCardView';
 import QuizView from '../views/QuizView';
 import DeckView from '../views/DeckView';
 import React from 'react';
 import { View } from 'react-native';
 
 const IOS_ROUTE_CONFIG = {
+    DeckListView: {
+      screen: DeckListView,
+      navigationOptions: {
+        tabBarLabel: 'My Decks',
+        tabBarIcon: ({ tintColor }) => <Ionicons name='ios-albums' size={30} color={tintColor} />
+      },
+    },
     NewDeckView: {
       screen: NewDeckView,
       navigationOptions: {
@@ -18,14 +25,7 @@ const IOS_ROUTE_CONFIG = {
         tabBarLabel: 'New Deck',
         tabBarIcon: ({ tintColor }) => <Ionicons name='ios-bookmarks' size={30} color={tintColor} />
       },
-    }, 
-    DeckListView: {
-        screen: DeckListView,
-        navigationOptions: {
-          tabBarLabel: 'My Decks',
-          tabBarIcon: ({ tintColor }) => <Ionicons name='ios-albums' size={30} color={tintColor} />
-        },
-    } 
+    }
 }
 
 const NAVIGATOR_OPTIONS = { 
@@ -57,8 +57,8 @@ const MainNavigator = createStackNavigator({
   App: {
         screen: Tab()
   }, 
-  IndividualDeckView: {
-      screen: IndividualDeckView,
+  NewCardView: {
+      screen: NewCardView,
       navigationOptions: ({ navigation }) => ({
         title: `Add Card`,
       }),

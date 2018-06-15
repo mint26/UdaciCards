@@ -24,21 +24,22 @@ class DeckView extends Component {
     }
 
     componentDidUpdate(){
-        if (this.state.currentDeckId && !this.state.hasUpdated) {
-            return API.getDeck(this.state.currentDeckId).then((item) => {
-                let obj = JSON.parse(item);
+        API.getDeck(this.state.currentDeckId).then((item) => {
+            let obj = JSON.parse(item);
+            
+            if (this.state.currentDeck && this.state.currentDeck.questions.length !== obj.questions.length) {
                 this.setState({
-                                currentDeck: obj, 
-                                hasQuestion: obj.questions && obj.questions.length > 0 ? true : false, 
-                                hasUpdated: true
-                            });
-            })
-        }
+                    currentDeck: obj, 
+                    hasQuestion: obj.questions && obj.questions.length > 0 ? true : false, 
+                    hasUpdated: true
+                });
+            }
 
+        });
     }
 
     onAddCard = () => {
-        this.props.navigation.navigate('IndividualDeckView', {item: JSON.stringify(this.state.currentDeck)});
+        this.props.navigation.navigate('NewCardView', {item: JSON.stringify(this.state.currentDeck)});
     }
 
     onStartQuiz = () => {

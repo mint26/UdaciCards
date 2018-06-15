@@ -18,7 +18,7 @@ const modal = ({leftBtn, rightBtn, message, visible}) => {
             <View style={cmpStyles.container}>
                 <View style={cmpStyles.box}>
                     <View style={cmpStyles.msgBox}>
-                        <Text style={cmpStyles.message}>{message}</Text>
+                        <Text style={cmpStyles.message} numberOfLines={2} ellipsizeMode={'tail'}>{message}</Text>
                     </View>
                     <View style={cmpStyles.btnPanel}>
                         <TouchableOpacity style={[styles.button, cmpStyles.button]} onPress={leftBtn.action}>
@@ -47,7 +47,8 @@ const cmpStyles = StyleSheet.create({
         backgroundColor: white,
         padding: variables.normalGap,
         margin: variables.smallGap,
-        height: '40%'
+        height: '40%',
+        width: '90%'
     }, 
     msgBox:{
         marginBottom: variables.normalGap,

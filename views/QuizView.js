@@ -60,6 +60,11 @@ class QuizView extends Component {
         this.props.navigation.goBack(); 
     }
 
+    onRestart = () => {
+        this.setState({currentIndex: 0, currentQuestion: this.state.currentDeck.questions[0], endOfDeck: false, showQuestion: true, numCorrect: 0}); 
+        this.flipCard(); 
+    }
+
     flipCard = () => {
         if (this.value >= 90) { 
           Animated.spring(this.animatedValue,{
@@ -108,6 +113,9 @@ class QuizView extends Component {
                         <Text style={viewStyles.resultText}>{score}</Text>
                     </View>
                     <View style={viewStyles.buttonPanel}>
+                        <TouchableOpacity style={StyleSheet.flatten([styles.button, viewStyles.button])} onPress={this.onRestart}>
+                            <Text style={styles.buttonText}>Restart</Text>
+                        </TouchableOpacity>
                         <TouchableOpacity style={StyleSheet.flatten([styles.button, viewStyles.button])} onPress={this.onBack}>
                             <Text style={styles.buttonText}>Back</Text>
                         </TouchableOpacity>

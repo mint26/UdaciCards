@@ -11,7 +11,13 @@ export async function getDecks(){
 }
 
 function getAllDecks(){
-    return AsyncStorage.getAllKeys().then(keys => {
+    return AsyncStorage.getAllKeys()
+        .then(keys=> {
+            let newKeys = keys.filter(key => { 
+                return key !== LAST_VISITED_DATE
+            }); 
+            return newKeys;  
+        }).then(keys => {
         if (keys && keys.length > 0) {
             return AsyncStorage.multiGet(keys); 
         }
