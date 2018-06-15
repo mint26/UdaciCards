@@ -8,7 +8,9 @@ To get started developing right away:
 
 * install all project dependencies with `npm install`
 * start the development server with `npm start`
-* make sure you have either the expo app installed in your testing devices or simulators such as `genymotion` 
+* make sure you have the expo app installed in your testing devices
+* scan the qr code using your testing devices
+* applicable for both android and ios
 
 ### Prerequisites
 

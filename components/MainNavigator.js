@@ -28,17 +28,12 @@ const IOS_ROUTE_CONFIG = {
     } 
 }
 
-const NAVIGATOR_OPTIONS = {
-    navigationOptions: {
-      header : {
-        visible: false
-      }
-    }, 
+const NAVIGATOR_OPTIONS = { 
     tabBarOptions: {
-      activeTintColor: isAndroid() ? purple : white,
+      activeTintColor: white,
       style: {
         height: 56,
-        backgroundColor: isAndroid() ? purple : purple,
+        backgroundColor: purple,
         shadowColor: 'rgba(0, 0, 0, 0.24)',
         shadowOffset: {
           width: 0,

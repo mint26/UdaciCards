@@ -24,7 +24,7 @@ const modal = ({leftBtn, rightBtn, message, visible}) => {
                         <TouchableOpacity style={[styles.button, cmpStyles.button]} onPress={leftBtn.action}>
                             <Text style={[styles.buttonText,cmpStyles.buttonText]}>{leftBtn.text}</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={[styles.button, cmpStyles.button, cmpStyles.pullRight]} onPress={rightBtn.action}>
+                        <TouchableOpacity style={[styles.button, cmpStyles.button]} onPress={rightBtn.action}>
                             <Text style={[styles.buttonText,cmpStyles.buttonText]}>{rightBtn.text}</Text>
                         </TouchableOpacity>
                     </View>
@@ -72,9 +72,6 @@ const cmpStyles = StyleSheet.create({
     buttonText: {
         fontSize: variables.normalFontSize, 
         textAlign:'center'
-    },
-    pullRight: {
-        float: 'right'
     }
 });
 
