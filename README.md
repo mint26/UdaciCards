@@ -10,7 +10,8 @@ To get started developing right away:
 * start the development server with `npm start`
 * make sure you have the expo app installed in your testing devices
 * scan the qr code using your testing devices
-* applicable for both android and ios
+* applicable for both android and ios 
+* tested using emulators (android: v7.1.0 API 25, iOS: v9.2) and phone devices (iOS: v11.4, android: v6.0.1) 
 
 ### Prerequisites
 
