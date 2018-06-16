@@ -47,7 +47,7 @@ class QuizView extends Component {
     onNextCard = (increment) => {
         let numCorrect = this.state.numCorrect + increment; 
         if (this.state.currentIndex < this.state.currentDeck.questions.length - 1) {
-            let nextIndex = this.state.currentIndex++; 
+            let nextIndex = ++this.state.currentIndex; 
             let nextQn = this.state.currentDeck.questions[nextIndex];
             this.setState({showQuestion: true, currentQuestion: nextQn, numCorrect: numCorrect});
         } else {

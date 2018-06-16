@@ -38,8 +38,10 @@ class DeckListView extends Component {
                         return new Deck(deckItem.deckId, deckItem.title, deckItem.questions);; 
                     }
                 }); 
-                if (this.state.decks.length !== decks.length)
+                if (this.state.decks.length !== decks.length) {
                     this.setState({decks : items}); 
+                }
+                    
             }
         });
     }
