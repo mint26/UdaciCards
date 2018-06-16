@@ -62,7 +62,11 @@ To get started developing right away:
 [ ] Users should receive a notification to remind themselves to study if they haven't already for that day.
 
 ## Video Walkthrough
+iOS Demo
+![ezgif com-video-to-gif 1](https://user-images.githubusercontent.com/25121123/41495821-fc89cdde-7162-11e8-8504-6297d898e555.gif)
 
+Android Demo
+![ezgif com-video-to-gif](https://user-images.githubusercontent.com/25121123/41495822-fcb78012-7162-11e8-81fd-221bdfe17bb0.gif)
 
 ## Contributing
 
