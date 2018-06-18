@@ -19,29 +19,37 @@ To get started developing right away:
 
 ### Project Structure
 ```bash
-├── CONTRIBUTING.md
 ├── README.md - This file.
-├── SEARCH_TERMS.md # The whitelisted short collection of available search terms for you to use with your app.
 ├── package.json # npm package manager file. It's unlikely that you'll need to modify this.
-├── public
-│   ├── favicon.ico # React Icon, You may change if you wish.
-│   └── index.html # DO NOT MODIFY
-└── src
-    ├── components/ # This is where the react components required for this app are placed in. 
-        ├── Book.js # The component used to render individual book on the shelf and the search result
-        ├── Bookshelf.js # The component which is used to contain rows of books in accordance to its category.
-        ├── Row.js # The component used to group book of same category together. 
-        ├── Search.js # The component for the search input and display the search result. 
-    ├── App.css # Styles for your app. Feel free to customize this as you desire.
-    ├── App.js # This is the root of your app. Contains static HTML right now.
-    ├── App.test.js # Used for testing. Provided with Create React App. Testing is encouraged, but not required.
-    ├── BooksAPI.js # A JavaScript API for the provided Udacity backend. Instructions for the methods are below.
-    ├── icons # Helpful images for your app. Use at your discretion.
-    │   ├── add.svg
-    │   ├── arrow-back.svg
-    │   └── arrow-drop-down.svg
-    ├── index.css # Global styles. You probably won't need to change anything here.
-    └
+├── App.js # This is the root of your app. Contains static HTML right now.
+├── App.json # Application json file for storing configuration 
+├── App.test.js # Used for testing. Provided with Create React App. Testing is encouraged, but not required.
+├── .gitignore # git configuration file
+├── .babelrc # Babel configuration file
+├── .watchmanconfig # File watching service configuration file
+├── models/ # Data models for the app
+│   ├── Deck.js # Used to store the deck object
+│   ├── Question.js # Used to store the question object
+├── components/ # This is where the react components required for this app are placed in. 
+        ├── ListItem.js # The list item in the flat list
+        ├── MainNavigator.js # Handle the navigation of the app
+        ├── Modal.js # Custom modal for the app
+        ├── StatusBar.js # Status bar component for the app 
+├── constants/ # Shared constants
+│   ├── constants.js # Contains string constants
+├── utils/ # Shared services
+│   ├── api.js # API to save data on local storage
+│   ├── colors.js # Color constants
+│   ├── utils.js # Common utility functions
+├── views/ # The main views for the app
+│   ├── DeckListView.js # React container for a list of decks
+│   ├── DeckView.js # React container for selected deck
+│   ├── NewCardView.js # React container for adding new card
+│   ├── NewDeckView.js # React container for adding new deck
+│   ├── QuizView.js # React container for ongoing quiz
+├── styles/ # Styles for your app. Feel free to customize this as you desire.
+│   ├── styles.js # Global style object
+
 
 ```
 
@@ -69,17 +77,13 @@ iOS Demo <br/>
 <br/> Android Demo <br/>
 ![ezgif com-video-to-gif](https://user-images.githubusercontent.com/25121123/41495822-fcb78012-7162-11e8-81fd-221bdfe17bb0.gif)
 
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
 ## Versioning
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
 
 ## Authors
 
-* **Tan Hui Min** - *Final Udacity React Project* - [MyReads](https://github.com/mint26/myreads)
+* **Tan Hui Min** - *Final Udacity React-Native Project* - [Udacicards](https://github.com/mint26/Udacicards)
 
 
 ## License
